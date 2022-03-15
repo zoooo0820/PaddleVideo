@@ -46,5 +46,6 @@ class STGCNHead(BaseHead):
         """
         x = self.fcn(x)
         x = paddle.reshape_(x, (x.shape[0], -1))  # N,C,1,1 --> N,C
-
+        # add for export develop 
+        #x = nn.functional.softmax(x, -1)
         return x

@@ -94,21 +94,22 @@ class AGCN(nn.Layer):
     """
     def __init__(self, in_channels=2, **kwargs):
         super(AGCN, self).__init__()
-
-        self.data_bn = nn.BatchNorm1D(25 * 2)
+        
+        kpt_num = 17
+        self.data_bn = nn.BatchNorm1D(kpt_num * 2)
         self.agcn = nn.Sequential(
             Block(in_channels=in_channels,
                   out_channels=64,
-                  residual=False,
-                  **kwargs), Block(in_channels=64, out_channels=64, **kwargs),
-            Block(in_channels=64, out_channels=64, **kwargs),
-            Block(in_channels=64, out_channels=64, **kwargs),
-            Block(in_channels=64, out_channels=128, stride=2, **kwargs),
-            Block(in_channels=128, out_channels=128, **kwargs),
-            Block(in_channels=128, out_channels=128, **kwargs),
-            Block(in_channels=128, out_channels=256, stride=2, **kwargs),
-            Block(in_channels=256, out_channels=256, **kwargs),
-            Block(in_channels=256, out_channels=256, **kwargs))
+                  residual=False,vertex_nums=kpt_num,
+                  **kwargs), Block(in_channels=64, out_channels=64, vertex_nums=kpt_num, **kwargs),
+            Block(in_channels=64, out_channels=64, vertex_nums=kpt_num,**kwargs),
+            Block(in_channels=64, out_channels=64, vertex_nums=kpt_num,**kwargs),
+            Block(in_channels=64, out_channels=128, stride=2, vertex_nums=kpt_num,**kwargs),
+            Block(in_channels=128, out_channels=128, vertex_nums=kpt_num,**kwargs),
+            Block(in_channels=128, out_channels=128, vertex_nums=kpt_num,**kwargs),
+            Block(in_channels=128, out_channels=256, stride=2, vertex_nums=kpt_num,**kwargs),
+            Block(in_channels=256, out_channels=256, vertex_nums=kpt_num,**kwargs),
+            Block(in_channels=256, out_channels=256, vertex_nums=kpt_num,**kwargs))
 
         self.pool = nn.AdaptiveAvgPool2D(output_size=(1, 1))
 
